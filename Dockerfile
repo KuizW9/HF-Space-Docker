@@ -46,7 +46,7 @@ Nodes:
 EOF
 
 
-RUN nohup ./XrayR/XrayR -c ./XrayR/config.yml &
-RUN nohup ./cloudflared tunnel run --token eyJhIjoiNjQ1MTEzYmM3MWQ0MDgwMzA2ZmFmMWJhMmYyZmM4MGEiLCJ0IjoiNTI2ZDdiNWItYmZhMS00YzYxLTgyOTAtNTMwOGI1NzU2MGQ5IiwicyI6IllqZ3hOekZsT0dJdFpqUXlNQzAwWVdZM0xXSXlPR0V0TlRBMVl6RmxZek0zTjJNeSJ9 &
-
-ENTRYPOINT [ "./XrayR/XrayR", "--config", "./XrayR/config.yml"]
+#RUN nohup ./XrayR/XrayR -c ./XrayR/config.yml &
+#RUN nohup ./cloudflared tunnel run --token eyJhIjoiNjQ1MTEzYmM3MWQ0MDgwMzA2ZmFmMWJhMmYyZmM4MGEiLCJ0IjoiNTI2ZDdiNWItYmZhMS00YzYxLTgyOTAtNTMwOGI1NzU2MGQ5IiwicyI6IllqZ3hOekZsT0dJdFpqUXlNQzAwWVdZM0xXSXlPR0V0TlRBMVl6RmxZek0zTjJNeSJ9 &
+RUN chmod +x xxxx.sh
+ENTRYPOINT [ "bash xxxx.sh"]
