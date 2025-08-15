@@ -4,14 +4,12 @@ FROM  alpine
 RUN  apk --update --no-cache add tzdata ca-certificates \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime 
 RUN apk add --no-cache wget unzip curl
-
 RUN wget -O XrayR-linux-64.zip https://github.com/XrayR-project/XrayR/releases/download/v0.9.4/XrayR-linux-64.zip
 RUN mkdir XrayR
 RUN unzip XrayR-linux-64.zip -d XrayR
 RUN wget -O cloudflared https://github.com/cloudflare/cloudflared/releases/download/2025.8.0/cloudflared-linux-amd64
 RUN chmod +x cloudflared
 RUN chmod +x XrayR/XrayR
-RUN nohup ./cloudflared tunnel run --token eyJhIjoiNjQ1MTEzYmM3MWQ0MDgwMzA2ZmFmMWJhMmYyZmM4MGEiLCJ0IjoiNTI2ZDdiNWItYmZhMS00YzYxLTgyOTAtNTMwOGI1NzU2MGQ5IiwicyI6IllqZ3hOekZsT0dJdFpqUXlNQzAwWVdZM0xXSXlPR0V0TlRBMVl6RmxZek0zTjJNeSJ9 &
 
 RUN cat <<EOF > ./XrayR/config.yml
 Log:
@@ -34,7 +32,7 @@ Nodes:
      ApiConfig:
        ApiHost: "http://alvgw.xyz"
        ApiKey: "n8ae9hw0zqCRfA6ApJ64bgvrT1ict"
-       NodeID: 24
+       NodeID: 25
        NodeType: V2ray  # Node type: V2ray, Shadowsocks, Trojan
        Timeout: 30 # Timeout for the api request
        EnableVless: false # Enable Vless for V2ray Type
@@ -49,5 +47,6 @@ EOF
 
 
 RUN nohup ./XrayR/XrayR -c ./XrayR/config.yml &
+RUN nohup ./cloudflared tunnel run --token eyJhIjoiNjQ1MTEzYmM3MWQ0MDgwMzA2ZmFmMWJhMmYyZmM4MGEiLCJ0IjoiNTI2ZDdiNWItYmZhMS00YzYxLTgyOTAtNTMwOGI1NzU2MGQ5IiwicyI6IllqZ3hOekZsT0dJdFpqUXlNQzAwWVdZM0xXSXlPR0V0TlRBMVl6RmxZek0zTjJNeSJ9 &
 
 ENTRYPOINT [ "./XrayR/XrayR", "--config", "./XrayR/config.yml"]
