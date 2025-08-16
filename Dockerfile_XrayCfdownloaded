@@ -1,0 +1,34 @@
+# Release
+FROM  alpine
+# 安装必要的工具包
+RUN  apk --update --no-cache add tzdata ca-certificates \
+    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime 
+    
+RUN  apk --no-cache add wget unzip python3 screen bash
+
+RUN mkdir /etc/XrayR
+COPY entrypoint.sh /etc/XrayR/entrypoint.sh
+# Make the script executable
+COPY XrayR /etc/XrayR/XrayR
+COPY custom_inbound.json /etc/XrayR/custom_inbound.json
+COPY custom_outbound.json /etc/XrayR/custom_outbound.json
+COPY dns.json /etc/XrayR/dns.json
+COPY route.json /etc/XrayR/route.json
+COPY geoip.dat /etc/XrayR/geoip.dat
+COPY geosite.dat /etc/XrayR/geosite.dat
+COPY rulelist /etc/XrayR/rulelist
+COPY config.yml /etc/XrayR/config.yml
+COPY cloudflared /etc/XrayR/cloudflared
+
+RUN chmod +x /etc/XrayR/entrypoint.sh
+RUN chmod +x /etc/XrayR/XrayR
+RUN chmod +x /etc/XrayR/cloudflared
+# Set the entrypoint
+#ENTRYPOINT ["/etc/XrayR/XrayR","--config","/etc/XrayR/config.yml"]
+#ENTRYPOINT ["/etc/XrayR/cloudflared","tunnel run --token","eyJhIjoiNjQ1MTEzYmM3MWQ0MDgwMzA2ZmFmMWJhMmYyZmM4MGEiLCJ0IjoiNTI2ZDdiNWItYmZhMS00YzYxLTgyOTAtNTMwOGI1NzU2MGQ5IiwicyI6IllqZ3hOekZsT0dJdFpqUXlNQzAwWVdZM0xXSXlPR0V0TlRBMVl6RmxZek0zTjJNeSJ9"]
+#ENTRYPOINT ["/etc/XrayR/cloudflared"]
+#CMD ["/etc/XrayR/cloudflared","tunnel","run","--token","eyJhIjoiNjQ1MTEzYmM3MWQ0MDgwMzA2ZmFmMWJhMmYyZmM4MGEiLCJ0IjoiNTI2ZDdiNWItYmZhMS00YzYxLTgyOTAtNTMwOGI1NzU2MGQ5IiwicyI6IllqZ3hOekZsT0dJdFpqUXlNQzAwWVdZM0xXSXlPR0V0TlRBMVl6RmxZek0zTjJNeSJ9"]
+#CMD ["screen -dmS cfargo bash -c"，"/etc/XrayR/cloudflared","tunnel", "--no-autoupdate", "run", "--token","eyJhIjoiNjQ1MTEzYmM3MWQ0MDgwMzA2ZmFmMWJhMmYyZmM4MGEiLCJ0IjoiNTI2ZDdiNWItYmZhMS00YzYxLTgyOTAtNTMwOGI1NzU2MGQ5IiwicyI6IllqZ3hOekZsT0dJdFpqUXlNQzAwWVdZM0xXSXlPR0V0TlRBMVl6RmxZek0zTjJNeSJ9"]
+#ENTRYPOINT ["/etc/XrayR/XrayR"]
+#CMD ["nohup","/etc/XrayR/XrayR","--config","/etc/XrayR/config.yml"]
+CMD ["/bin/bash", "-c", "/etc/XrayR/entrypoint.sh"] 
