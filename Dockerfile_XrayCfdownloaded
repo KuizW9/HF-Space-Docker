@@ -24,11 +24,6 @@ RUN chmod +x /etc/XrayR/entrypoint.sh
 RUN chmod +x /etc/XrayR/XrayR
 RUN chmod +x /etc/XrayR/cloudflared
 # Set the entrypoint
-#ENTRYPOINT ["/etc/XrayR/XrayR","--config","/etc/XrayR/config.yml"]
-#ENTRYPOINT ["/etc/XrayR/cloudflared","tunnel run --token","eyJhIjoiNjQ1MTEzYmM3MWQ0MDgwMzA2ZmFmMWJhMmYyZmM4MGEiLCJ0IjoiNTI2ZDdiNWItYmZhMS00YzYxLTgyOTAtNTMwOGI1NzU2MGQ5IiwicyI6IllqZ3hOekZsT0dJdFpqUXlNQzAwWVdZM0xXSXlPR0V0TlRBMVl6RmxZek0zTjJNeSJ9"]
-#ENTRYPOINT ["/etc/XrayR/cloudflared"]
-#CMD ["/etc/XrayR/cloudflared","tunnel","run","--token","eyJhIjoiNjQ1MTEzYmM3MWQ0MDgwMzA2ZmFmMWJhMmYyZmM4MGEiLCJ0IjoiNTI2ZDdiNWItYmZhMS00YzYxLTgyOTAtNTMwOGI1NzU2MGQ5IiwicyI6IllqZ3hOekZsT0dJdFpqUXlNQzAwWVdZM0xXSXlPR0V0TlRBMVl6RmxZek0zTjJNeSJ9"]
-#CMD ["screen -dmS cfargo bash -c"，"/etc/XrayR/cloudflared","tunnel", "--no-autoupdate", "run", "--token","eyJhIjoiNjQ1MTEzYmM3MWQ0MDgwMzA2ZmFmMWJhMmYyZmM4MGEiLCJ0IjoiNTI2ZDdiNWItYmZhMS00YzYxLTgyOTAtNTMwOGI1NzU2MGQ5IiwicyI6IllqZ3hOekZsT0dJdFpqUXlNQzAwWVdZM0xXSXlPR0V0TlRBMVl6RmxZek0zTjJNeSJ9"]
 #ENTRYPOINT ["/etc/XrayR/XrayR"]
-#CMD ["nohup","/etc/XrayR/XrayR","--config","/etc/XrayR/config.yml"]
+
 CMD ["/bin/bash", "-c", "/etc/XrayR/entrypoint.sh"] 
