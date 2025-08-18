@@ -59,6 +59,50 @@ Nodes:
        UpdatePeriodic: 10 # Time to update the nodeinfo, how many sec.
        EnableDNS: false # Use custom DNS config, Please ensure that you set the dns.json well
 EOF
+RUN cat <<EOF > /etc/XrayR/custom_outbound.json
+[
+  {
+    "tag": "IPv4_out",
+    "protocol": "freedom",
+    "settings": {}
+  },
+  {
+    "tag": "IPv6_out",
+    "protocol": "freedom",
+    "settings": {
+      "domainStrategy": "UseIPv6"
+    }
+  },
+{
+  "tag": "huggingface",
+  "protocol": "shadowsocks",
+  "settings": {
+    "servers": [
+      {
+        "address": "6231326.xyz",
+        "port": 8903,
+        "password": "Qoah/O3icCOGS9NBbJ0nLqv9CucSW+wdGngBg4S8UEU=",
+        "method": "aes-256-gcm",
+        "uot": true
+      }
+    ]
+  },
+  "streamSettings": {
+    "network": "tcp",
+    "security": "none",
+    "tcpSettings": {
+      "header": {
+        "type": "none"
+      }
+    }
+  }
+},
+  {
+    "protocol": "blackhole",
+    "tag": "block"
+  }
+]
+EOF
 
 RUN chmod +x /etc/XrayR/entrypoint.sh
 RUN chmod +x /etc/XrayR/app.py
