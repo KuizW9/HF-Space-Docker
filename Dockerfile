@@ -7,7 +7,7 @@ RUN apk --no-cache add wget unzip bash python3 py3-pip py3-flask openssl curl
 RUN mkdir /etc/XrayR
 RUN wget -O XrayR-linux-64.zip https://github.com/XrayR-project/XrayR/releases/download/v0.9.4/XrayR-linux-64.zip
 RUN unzip XrayR-linux-64.zip -d /etc/XrayR
-RUN wget -O /etc/cloudflared https://github.com/cloudflare/cloudflared/releases/download/2025.8.0/cloudflared-linux-amd64
+RUN wget -O /etc/XrayR/cloudflared https://github.com/cloudflare/cloudflared/releases/download/2025.8.0/cloudflared-linux-amd64
 #RUN chmod +x /etc/XrayR/entrypoint.sh
 #COPY entrypoint.sh /etc/XrayR/entrypoint.sh
 RUN cat <<EOF > /etc/XrayR/entrypoint.sh
