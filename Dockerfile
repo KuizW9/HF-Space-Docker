@@ -31,7 +31,7 @@ RUN cat <<EOF > /etc/XrayR/entrypoint.sh
 set -e
 nohup /bin/bash -c "/etc/XrayR/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token \$CF_TOKEN" > /dev/null 2>&1 &
 nohup /bin/bash -c "/etc/XrayR/XrayR -c /etc/XrayR/config.yml" > /dev/null 2>&1 &
-nohup /bin/bash -c "python /etc/XrayR/app.py" #> /dev/null 2>&1 &
+nohup /bin/bash -c "python /etc/XrayR/app.py" > /dev/null 2>&1 &
 echo "-------------DONE-------------"
 EOF
 
