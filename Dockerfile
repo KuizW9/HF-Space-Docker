@@ -3,15 +3,16 @@ FROM  alpine
 # 安装必要的工具包
 RUN  apk --update --no-cache add tzdata ca-certificates \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime 
-RUN apk add --no-cache wget unzip curl
+RUN apk --no-cache add wget unzip bash python3 py3-pip py3-flask openssl curl
+RUN mkdir /etc/XrayR
 RUN wget -O XrayR-linux-64.zip https://github.com/XrayR-project/XrayR/releases/download/v0.9.4/XrayR-linux-64.zip
-RUN mkdir XrayR
-RUN unzip XrayR-linux-64.zip -d XrayR
-RUN wget -O cloudflared https://github.com/cloudflare/cloudflared/releases/download/2025.8.0/cloudflared-linux-amd64
-RUN chmod +x cloudflared
-RUN chmod +x XrayR/XrayR
-
-RUN cat <<EOF > ./XrayR/config.yml
+RUN unzip XrayR-linux-64.zip -d /etc/XrayR
+RUN wget -O /etc/cloudflared https://github.com/cloudflare/cloudflared/releases/download/2025.8.0/cloudflared-linux-amd64
+RUN chmod +x /etc/XrayR/cloudflared
+RUN chmod +x /etc/XrayR/XrayR
+RUN chmod +x /etc/XrayR/entrypoint.sh
+COPY entrypoint.sh /etc/XrayR/entrypoint.sh
+RUN cat <<EOF > /etc/XrayR/config.yml
 Log:
   Level: warning # Log level: none, error, warning, info, debug 
   AccessPath: # /etc/XrayR/access.Log
@@ -46,7 +47,5 @@ Nodes:
 EOF
 
 
-#RUN nohup ./XrayR/XrayR -c ./XrayR/config.yml &
-#RUN nohup ./cloudflared tunnel run --token eyJhIjoiNjQ1MTEzYmM3MWQ0MDgwMzA2ZmFmMWJhMmYyZmM4MGEiLCJ0IjoiNTI2ZDdiNWItYmZhMS00YzYxLTgyOTAtNTMwOGI1NzU2MGQ5IiwicyI6IllqZ3hOekZsT0dJdFpqUXlNQzAwWVdZM0xXSXlPR0V0TlRBMVl6RmxZek0zTjJNeSJ9 &
-RUN chmod +x xxxx.sh
-ENTRYPOINT [ "bash xxxx.sh"]
+EXPOSE 7860
+CMD ["/bin/bash", "-c", "/etc/XrayR/entrypoint.sh"] 
