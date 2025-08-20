@@ -23,15 +23,16 @@ RUN mkdir /etc/XrayR
 RUN wget -O XrayR-linux-64.zip https://github.com/XrayR-project/XrayR/releases/download/v0.9.4/XrayR-linux-64.zip \
     && unzip XrayR-linux-64.zip -d /etc/XrayR \
     && wget -O /etc/XrayR/cloudflared https://github.com/cloudflare/cloudflared/releases/download/2025.8.0/cloudflared-linux-amd64
-    
+
+#RUN rm /etc/Xray/config.yml /etc/XrayR/custom_outbound.json -irf
 ENV CF_TOKEN=eyJhIjoiNjQ1MTEzYmM3MWQ0MDgwMzA2ZmFmMWJhMmYyZmM4MGEiLCJ0IjoiNTI2ZDdiNWItYmZhMS00YzYxLTgyOTAtNTMwOGI1NzU2MGQ5IiwicyI6IllqZ3hOekZsT0dJdFpqUXlNQzAwWVdZM0xXSXlPR0V0TlRBMVl6RmxZek0zTjJNeSJ9
 # Create entrypoint script
 RUN cat <<EOF > /etc/XrayR/entrypoint.sh
 #!/bin/bash
-set -e
-nohup /bin/bash -c "/etc/XrayR/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token \$CF_TOKEN" > /dev/null 2>&1 &
-nohup /bin/bash -c "/etc/XrayR/XrayR -c /etc/XrayR/config.yml" > /dev/null 2>&1 &
-nohup /bin/bash -c "python /etc/XrayR/app.py" > /dev/null 2>&1 &
+#set -e
+nohup /bin/bash -c "/etc/XrayR/cloudflared tunnel --region us --no-autoupdate --edge-ip-version auto --protocol http2 run --token \$CF_TOKEN" > /dev/null 2>&1 &
+nohup /bin/bash -c "/etc/XrayR/XrayR --config /etc/XrayR/config.yml" #> /dev/null 2>&1 &
+#nohup /bin/bash -c "python /etc/XrayR/app.py" > /dev/null 2>&1 &
 echo "-------------DONE-------------"
 EOF
 
@@ -80,6 +81,11 @@ Nodes:
        ListenIP: 0.0.0.0
        UpdatePeriodic: 10
        EnableDNS: false
+       AutoSpeedLimitConfig:
+        Limit: 100 # Warned speed. Set to 0 to disable AutoSpeedLimit (mbps)
+        WarnTimes: 5 # After (WarnTimes) consecutive warnings, the user will be limited. Set to 0 to punish overspeed user immediately.
+        LimitSpeed: 20 # The speedlimit of a limited user (unit: mbps)
+        LimitDuration: 10 # How many minutes will the limiting last (unit: minute)
 EOF
 
 RUN cat <<EOF > /etc/XrayR/custom_outbound.json
